@@ -2,12 +2,13 @@
 
 ## Prerequisites
 
-- MongoDB: 
-1) Register on mongodb.com and create Shared Claster. 
-2) Create a user for database (userName & password)
-3) IP Access List - add 0.0.0.0
-4) Click "Connect" button and select "Connetct your application"
-5) Copy claster info from connection string. By default - "claster0.xxxxxx"
+- MongoDB:
+
+1. Register on mongodb.com and create Shared Claster.
+2. Create a user for database (userName & password)
+3. IP Access List - add 0.0.0.0
+4. Click "Connect" button and select "Connetct your application"
+5. Copy claster info from connection string. By default - "claster0.xxxxxx"
 
 ## Downloading
 
@@ -17,17 +18,20 @@ cd back-manager-app
 ```
 
 ## Connect to your DataBase on MongoDB
+
 - open src/index.ts. In mongoose.connect method replace ${} by userName, Password and ClasterInfo from Prerequisites
 
-## Run Xeroku
-Run commands
+## Deploy
 
-```bash
-git switch source
-heroku create --region eu
-heroku git:remote -a <YOUR_APP_NAME>
-git push heroku source:master
-```
+1. https://railway.app/
+2. New Project -> Deploy from GitHub repo -> login with GitHub
+3. Repository access -> Only select repositories -> final-task-backend -> Save
+4. Select repository 'final-task-backend'
+5. First try of deploy will fail. Settings -> General -> Root Directory: 'Project management application'
+6. Deployments -> button ... on failed one -> Redeploy
+7. Wait for success build
+8. Settings -> Environment -> Generate Domain
+9. use domain/api-docs for access to Swagger documentations.
 
 # REST service docs
 
@@ -51,7 +55,9 @@ git push heroku source:master
   - `POST /` - create board
   - `PUT /:boardId` - update board
   - `DELETE /:boardId` - delete board
+
 - `Boards` (`/boardsSet` route)
+
   - `GET /` - Get Boards by list of boardId
   - `GET /:userId` - Get Boards where user is owner or one of invited
 
@@ -62,11 +68,11 @@ git push heroku source:master
   - `POST /:columnsId` - create column
   - `PUT /:columnsId` - update column
   - `DELETE /:columnsId` - delete column
+
 - `Columns` (`/columnsSet` route)
   - `GET /` - Get Columns by list of columnId or in Boards where user is owner or one of invited
   - `PATCH /` - Change oreder of list of columns
   - `POST /` - Create set of Columns
-
 
 * `Task` (`boards/:boardId/columns/:columnsId/tasks` route)
 
@@ -75,7 +81,8 @@ git push heroku source:master
   - `POST /` - create task
   - `PUT /:taskId` - update task
   - `DELETE /:taskId` - delete task
-  - 
+  -
+
 - `Tasks` (`/tasksSet` route)
   - `GET /` - Get Tasks by list of taskId or in Boards where user is owner or one of invited, or by search request
   - `PATCH /` - Change oreder and column of list of tasks
@@ -86,7 +93,7 @@ git push heroku source:master
   - `POST /` - upload file `multipart/form-data`
   - `GET /:boardId` - Get files by BoardId
   - `DELETE /:fileId` - delete file
-  - 
+  -
 * `Point` (`points/` route)
   - `GET /` - Get Points by list of pointId or in Boards where user is owner or one of invited
   - `POST /` - Create a new point
@@ -98,9 +105,11 @@ git push heroku source:master
 # Advanced
 
 ## Socket Events
+
 - events: "users", "boards", "columns", "tasks", "files", "points"
-Listen events on backend deploy main route (soket = io('https://xxx.herokuapp.com'))
-- socket payload: 
+  Listen events on backend deploy main route (soket = io('https://xxx.herokuapp.com'))
+- socket payload:
+
 ```bash
 {
   action: 'add' | 'update' | 'delete' // Тип изменения в базе
@@ -108,6 +117,6 @@ Listen events on backend deploy main route (soket = io('https://xxx.herokuapp.co
   ids: string[] // Список id созданных/измененных/удаленных записей в базе
   guid: string // Уникальный код запроса (Присваивается в хэддере Guid запроса на бэкенд)
   notify: boolean // Нужно ли уведомлять текущего пользователя об изменениях в базе
-  initUser: string // id пользователя, инициировавшего изменения в базе (Присваивается в хэддере initUser запроса на бэкенд) 
+  initUser: string // id пользователя, инициировавшего изменения в базе (Присваивается в хэддере initUser запроса на бэкенд)
 }
 ```
